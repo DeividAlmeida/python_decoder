@@ -14,7 +14,7 @@ def rank_digits_by_score(frequency):
   for digit, counts in frequency.items():
     total_score = sum(counts)
     if total_score > 0:
-      score = counts[0] * 3 + counts[1] * 2
+      score = ( counts[0] * 3 + counts[1] * 2 ) / total_score
       scores[digit] = score
 
   sorted_digits = sorted(scores, key=scores.get, reverse=True)
