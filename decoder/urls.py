@@ -19,5 +19,5 @@ from decode.views import *
 
 
 urlpatterns = [
-    path('decode', upload_file, name='upload-file'),
+  path('', upload_file, name='upload-file'),
 ]

@@ -1,12 +1,7 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 import json
-import magic
-
-def validate_file_extension(file):
-  valid_extension = "text/plain"
-  file_extension = magic.from_buffer(file.read(1024), mime=True).lower()
-
-  return file_extension.endswith(valid_extension)
+from .utils import validate_file_extension
+from .controllers import *
 
 def upload_file(request):
   if request.method == "POST":
@@ -15,13 +10,12 @@ def upload_file(request):
       if not validate_file_extension(file):
         return HttpResponse("Extensão de arquivo inválida.")
       else:
-        data = {
-          "message": "Arquivo recebido com sucesso.",
-          "filename": file.name,
-          "status": "success"
-        }
-        json_data = json.dumps(data)
-        response = HttpResponse(json_data, content_type="application/json")
+        
+        digits = transform_file_to_array(file)
+        frequency = count_digits_frequency(digits)
+        password = rank_digits_by_score(frequency)
+
+        response = HttpResponse(password, content_type="application/json")
         
         return response
     else:
